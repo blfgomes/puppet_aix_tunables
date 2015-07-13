@@ -35,13 +35,14 @@ Puppet::Type.type(:disk).provide :disk do
     end
   end
 
-  def set_attr(attr, value)
-    chdev('-l', resource[:name], '-a', "#{attr}=#{value}")
-    @property_hash[attr.to_sym] = value
-  end
-
-  def queue_depth=(value)
-    set_attr('queue_depth', value)
+  def flush
+    options = []
+    resource.to_hash.each do |attr, value|
+      next if [:name, :provider, :loglevel].include? attr
+      options << ['-a', "#{attr}=#{value}"] 
+    end
+    chdev('-l', resource[:name], options)
+    @property_hash = resource.to_hash
   end
 
 end 
