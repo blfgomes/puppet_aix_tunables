@@ -41,8 +41,12 @@ Puppet::Type.type(:disk).provide :disk do
       next if [:name, :provider, :loglevel].include? attr
       options << ['-a', "#{attr}=#{value}"] 
     end
-    chdev('-l', resource[:name], options)
-    @property_hash = resource.to_hash
+    begin
+      chdev('-l', resource[:name], options)
+    rescue Puppet::ExecutionFailure => e
+      @property_hash = {}
+      raise Puppet::Error, "chdev had an error -> #{e.inspect}"
+    end
   end
 
 end 
