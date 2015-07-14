@@ -38,7 +38,7 @@ Puppet::Type.type(:disk).provide :disk do
   def flush
     options = []
     resource.to_hash.each do |attr, value|
-      next if [:name, :provider, :loglevel].include? attr
+      next if ! self.class.resource_type.validproperties.include? attr
       options << ['-a', "#{attr}=#{value}"] 
     end
     begin
