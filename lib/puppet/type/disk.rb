@@ -25,4 +25,9 @@ Puppet::Type.newtype(:disk) do
   newproperty(:reserve_policy) do
   end
 
+  newparam(:device_in_use) do
+    defaultto :true
+    newvalues(:true, :false)
+  end
+
 end

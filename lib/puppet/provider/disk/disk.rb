@@ -42,7 +42,11 @@ Puppet::Type.type(:disk).provide :disk do
       options << ['-a', "#{attr}=#{value}"] 
     end
     begin
-      chdev('-l', resource[:name], options)
+      if resource[:device_in_use] == true
+	chdev('-l', resource[:name], options, '-P')
+      else
+	chdev('-l', resource[:name], options)
+      end
     rescue Puppet::ExecutionFailure => e
       @property_hash = {}
       raise Puppet::Error, "chdev had an error -> #{e.inspect}"
