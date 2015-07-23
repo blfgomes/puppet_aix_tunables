@@ -1,5 +1,13 @@
 Puppet::Type.newtype(:vmo) do
 
+  def munge_default(name, value)
+      if value == 'default' then
+	provider.class.defaults[name.to_s]
+      else
+        value
+      end
+  end
+
   newparam(:name, :namevar => true) do
   end
 
@@ -85,6 +93,16 @@ Puppet::Type.newtype(:vmo) do
   end
 
   newproperty(:minperm_p) do
+    munge do |value|
+      @resource.munge_default(name, value)
+      #puts name
+      #if value == 'default' then
+	#puts provider.class.defaults['minperm_p']
+	#provider.class.defaults['minperm_p']
+      #else
+        #value
+      #end
+    end
   end
 
   newproperty(:nokilluid) do
