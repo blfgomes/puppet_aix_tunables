@@ -24,6 +24,7 @@ Puppet::Type.type(:vmo).provide :vmo do
       vmo('-x').split("\n").each do |line|
 	line_array = line.split(',')
 	name, current, default = line_array[0..3]
+        next if current == 'n/a'
 	type = line_array[-2]
 	name.sub!(/%$/, '_p')
 	instances_hash[name] = Tunable.new(name, current, default, type)
@@ -43,7 +44,10 @@ Puppet::Type.type(:vmo).provide :vmo do
       vmo_properties << ['-o', "#{attr_str}=#{value}"]
     end
     begin
-        vmo(vmo_properties)
+      output = vmo(vmo_properties)
+      if output =~ /is not supported/ then
+        raise Puppet::ExecutionFailure, output
+      end
     rescue Puppet::ExecutionFailure => e
       @property_hash = {}
       raise Puppet::Error, "vmo had an error -> #{e.inspect}"
