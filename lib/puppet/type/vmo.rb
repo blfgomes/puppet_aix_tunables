@@ -53,16 +53,7 @@ Puppet::Type.newtype(:vmo) do
   newproperty(:maxfree) do
   end
 
-  newproperty(:maxperm) do
-  end
-
-  newproperty(:maxpin) do
-  end
-
   newproperty(:maxpin_p) do
-  end
-
-  newproperty(:memory_frames) do
   end
 
   newproperty(:memplace_data) do
@@ -89,9 +80,6 @@ Puppet::Type.newtype(:vmo) do
   newproperty(:minfree) do
   end
 
-  newproperty(:minperm) do
-  end
-
   newproperty(:minperm_p) do
     munge do |value|
       @resource.munge_default(name, value)
@@ -115,12 +103,6 @@ Puppet::Type.newtype(:vmo) do
   end
 
   newproperty(:num_locks_per_semid) do
-  end
-
-  newproperty(:numpsblks) do
-  end
-
-  newproperty(:pinnable_frames) do
   end
 
   newproperty(:relalias_percentage) do
