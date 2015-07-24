@@ -39,9 +39,6 @@ Puppet::Type.type(:vmo).provide :vmo do
     resource.to_hash.each do |attr, value|
       next if ! self.class.resource_type.validproperties.include? attr
       attr_str = attr.to_s
-      if value == 'default' then
-        value = instances_hash[attr_str].value
-      end
       attr_str.sub!(/_p$/, '%')
       vmo_properties << ['-o', "#{attr_str}=#{value}"]
     end
