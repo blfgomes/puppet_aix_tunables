@@ -1,11 +1,22 @@
+require 'puppet/type/aix_tunables_util'
 Puppet::Type.newtype(:asoo) do
+
+  include Tunables_Util
 
   newparam(:name, :namevar => true) do
     desc "Name of tunable"
   end
 
-  newproperty(:value) do
-    desc "Value of tunable"
+  newproperty(:aso_active) do
+    munge do |value|
+      @resource.munge_default(name, value)
+    end
+  end
+
+  newproperty(:debug_level) do
+    munge do |value|
+      @resource.munge_default(name, value)
+    end
   end
 
 end
