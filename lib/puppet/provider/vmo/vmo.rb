@@ -10,7 +10,7 @@ Puppet::Type.type(:vmo).provide :vmo do
   def self.instances
     attr_hash = {:name => 'vmo'}
     self.instances_hash.each do |name, tunable_obj|
-      attr_hash[name.to_sym] = tunable_obj.value
+      attr_hash[name.to_sym] = tunable_obj.current
     end
     [new(attr_hash)]
   end
@@ -23,10 +23,10 @@ Puppet::Type.type(:vmo).provide :vmo do
       #self.instances
       vmo('-x').split("\n").each do |line|
 	line_array = line.split(',')
-	name, value, default = line_array[0..3]
+	name, current, default = line_array[0..3]
 	type = line_array[-2]
 	name.sub!(/%$/, '_p')
-	instances_hash[name] = Tunable.new(name, value, default, type)
+	instances_hash[name] = Tunable.new(name, current, default, type)
       end
       class_variable_set(:@@instances_hash, instances_hash)
     end
