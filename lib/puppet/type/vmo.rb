@@ -1,12 +1,7 @@
+require 'puppet/type/aix_tunables_util'
 Puppet::Type.newtype(:vmo) do
 
-  def munge_default(name, value)
-      if value == 'default' then
-	provider.class.instances_hash[name.to_s].default
-      else
-        value
-      end
-  end
+  include Tunables_Util
 
   newparam(:name, :namevar => true) do
     munge do |value|
