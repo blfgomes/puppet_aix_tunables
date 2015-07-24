@@ -24,7 +24,6 @@ Puppet::Type.type(:vmo).provide :vmo do
       vmo('-x').split("\n").each do |line|
 	line_array = line.split(',')
 	name, current, default = line_array[0..3]
-        next if current == 'n/a'
 	type = line_array[-2]
 	name.sub!(/%$/, '_p')
 	instances_hash[name] = Tunable.new(name, current, default, type)
