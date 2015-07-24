@@ -2,7 +2,7 @@ Puppet::Type.newtype(:vmo) do
 
   def munge_default(name, value)
       if value == 'default' then
-	provider.class.defaults[name.to_s]
+	provider.class.instances_hash[name.to_s].default
       else
         value
       end
