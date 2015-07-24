@@ -1,4 +1,4 @@
-class Tunable
+class TunableProperty
   attr_accessor :name, :current, :default, :type
 
   def initialize(name, current, default, type)
