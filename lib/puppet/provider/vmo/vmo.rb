@@ -1,4 +1,5 @@
 require 'puppet/provider/tunable'
+require 'puppet/tunable'
 
 Puppet::Type.type(:vmo).provide :vmo do
   confine :operatingsystem => :AIX
@@ -7,36 +8,39 @@ Puppet::Type.type(:vmo).provide :vmo do
   mk_resource_methods
 
   def self.instances
-    defaults = {}
     attr_hash = {:name => 'vmo'}
-    vmo('-x').split("\n").each do |line|
-      name, value, default = line.split(',')[0..3]
-      name.sub!(/%$/, '_p')
-      attr_hash[name.to_sym] = value
-      defaults[name] = default
+    self.instances_hash.each do |name, tunable_obj|
+      attr_hash[name.to_sym] = tunable_obj.value
     end
-    class_variable_set(:@@defaults, defaults)
     [new(attr_hash)]
   end
 
-  def self.defaults
+  def self.instances_hash
+    instances_hash = {}
     begin
-      defaults = class_variable_get(:@@defaults)
+      instances_hash = class_variable_get(:@@instances_hash)
     rescue 
-      self.instances
-      defaults = class_variable_get(:@@defaults)
+      #self.instances
+      vmo('-x').split("\n").each do |line|
+	line_array = line.split(',')
+	name, value, default = line_array[0..3]
+	type = line_array[-2]
+	name.sub!(/%$/, '_p')
+	instances_hash[name] = Tunable.new(name, value, default, type)
+      end
+      class_variable_set(:@@instances_hash, instances_hash)
     end
-    defaults
+    instances_hash
   end
 
   def flush
     vmo_properties = []
-    defaults = self.class.defaults
+    instances_hash = self.class.instances_hash
     resource.to_hash.each do |attr, value|
       next if ! self.class.resource_type.validproperties.include? attr
       attr_str = attr.to_s
       if value == 'default' then
-        value = defaults[attr_str]
+        value = instances_hash[attr_str].value
       end
       attr_str.sub!(/_p$/, '%')
       vmo_properties << ['-o', "#{attr_str}=#{value}"]
