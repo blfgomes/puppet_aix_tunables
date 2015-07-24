@@ -4,9 +4,6 @@ Puppet::Type.newtype(:vmo) do
   include Tunables_Util
 
   newparam(:name, :namevar => true) do
-    munge do |value|
-      @resource.munge_default(name, value)
-    end
   end
 
   newproperty(:ame_cpus_per_pool) do
