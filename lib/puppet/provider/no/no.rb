@@ -6,8 +6,4 @@ Puppet::Type.type(:no).provide :no, :parent => Puppet::Provider::Tunable do
 
   mk_resource_methods
 
-  def value=(v)
-    set_value(resource[:name], v)
-  end
-
 end 
