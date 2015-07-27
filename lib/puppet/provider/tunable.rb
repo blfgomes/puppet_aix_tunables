@@ -37,10 +37,14 @@ class Puppet::Provider::Tunable < Puppet::Provider
       # Properties in self.class.resource are stored lowercase while Kernel
       # tunables in AIX are case sensitive.
       # We should use the original name stored in TunableProperty.@name
-      attr_str = instances_hash[attr.to_s].name
-      attr_str.sub!(/_p$/, '%')
-      cmd_properties << ['-o', "#{attr_str}=#{value}"]
+      property = instances_hash[attr.to_s]
+      if property.current != value then
+	attr_str = property.name
+	attr_str.sub!(/_p$/, '%')
+	cmd_properties << ['-o', "#{attr_str}=#{value}"]
+      end
     end
+
     begin
       output = cmd(cmd_properties)
       if output =~ /is not supported/ then

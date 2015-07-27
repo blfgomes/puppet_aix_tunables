@@ -1,7 +1,6 @@
 require 'puppet/type/aix_tunables_util'
 
 Puppet::Type.newtype(:no) do
-  include Tunables_Util
 
   newparam(:name, :namevar => true) do
     desc "Name of tunable"
@@ -865,4 +864,5 @@ Puppet::Type.newtype(:no) do
     end
   end
 
+  include Tunables_Util
 end
