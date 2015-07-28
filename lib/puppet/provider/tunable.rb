@@ -18,7 +18,7 @@ class Puppet::Provider::Tunable < Puppet::Provider
       instances_hash = class_variable_get(:@@instances_hash)
     rescue 
       cmd('-x').split("\n").each do |line|
-	line_array = line.split(',')
+	line_array = line.split(',', -1)
 	name, current, default = line_array[0..3]
 	type = line_array[-2]
 	name.sub!(/%$/, '_p')
@@ -29,7 +29,16 @@ class Puppet::Provider::Tunable < Puppet::Provider
     instances_hash
   end
 
-  def flush
+  def cmdline(type)
+    filter = case type
+      when "reboot" 
+        cmd_flags = ['-r', '-y']
+        ['R', 'B']
+      when "dynamic" 
+        cmd_flags = ['-p']
+        ['D', 'M', 'I', 'C']
+      else return []
+    end
     cmd_properties = []
     instances_hash = self.class.instances_hash
     resource.to_hash.each do |attr, value|
@@ -38,21 +47,32 @@ class Puppet::Provider::Tunable < Puppet::Provider
       # tunables in AIX are case sensitive.
       # We should use the original name stored in TunableProperty.@name
       property = instances_hash[attr.to_s]
-      if property.current != value then
+      if property.current != value and property.current != 'n/a' and \
+         filter.include? property.type then
 	attr_str = property.name
 	attr_str.sub!(/_p$/, '%')
-	cmd_properties << ['-p', '-o', "#{attr_str}=#{value}"]
+	cmd_properties << ['-o', "#{attr_str}=#{value}"]
       end
     end
+    if !cmd_properties.empty? then
+      return cmd_flags + cmd_properties
+    else
+      return []
+    end
+  end
 
-    begin
-      output = cmd(cmd_properties)
-      if output =~ /is not supported/ then
-        raise Puppet::ExecutionFailure, output
+  def flush
+    [cmdline('reboot'), cmdline('dynamic')].each do |command|
+      begin
+	next if command.empty? 
+	output = cmd(command)
+	if output =~ /is not supported/ then
+	  raise Puppet::ExecutionFailure, output
+	end
+      rescue Puppet::ExecutionFailure => e
+	@property_hash = {}
+	raise Puppet::Error, "Error -> #{e.inspect}"
       end
-    rescue Puppet::ExecutionFailure => e
-      @property_hash = {}
-      raise Puppet::Error, "Error -> #{e.inspect}"
     end
   end
 
