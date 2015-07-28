@@ -41,7 +41,7 @@ class Puppet::Provider::Tunable < Puppet::Provider
       if property.current != value then
 	attr_str = property.name
 	attr_str.sub!(/_p$/, '%')
-	cmd_properties << ['-o', "#{attr_str}=#{value}"]
+	cmd_properties << ['-p', '-o', "#{attr_str}=#{value}"]
       end
     end
 
