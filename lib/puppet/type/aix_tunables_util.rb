@@ -27,7 +27,14 @@ module Tunables_Util
 
   def munge_default(name, value)
       if value == 'default' then
-        provider.class.instances_hash[name.to_s].default
+        instances_hash = provider.class.instances_hash
+        # Do not try to set 'n/a' values to default, since they are
+        # unsupported.
+        if instances_hash[name.to_s].current == 'n/a' then
+          'n/a'
+        else 
+          instances_hash[name.to_s].default
+        end
       else
         value
       end
