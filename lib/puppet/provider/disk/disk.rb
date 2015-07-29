@@ -42,7 +42,7 @@ Puppet::Type.type(:disk).provide :disk do
       options << ['-a', "#{attr}=#{value}"] 
     end
     begin
-      if resource[:device_in_use] == true
+      if resource[:device_in_use] == :true
 	chdev('-l', resource[:name], options, '-P')
       else
 	chdev('-l', resource[:name], options)
