@@ -7,7 +7,11 @@ class Puppet::Provider::Tunable < Puppet::Provider
     tunable = @commands[:cmd]
     attr_hash = {:name => tunable}
     self.instances_hash.each do |name, tunable_obj|
-      attr_hash[name.to_sym] = tunable_obj.current
+      if ['R', 'B'].include? tunable_obj.type and tunable_obj.current != 'n/a' then
+        attr_hash[name.to_sym] = tunable_obj.reboot
+      else
+        attr_hash[name.to_sym] = tunable_obj.current
+      end 
     end
     [new(attr_hash)]
   end
@@ -19,10 +23,10 @@ class Puppet::Provider::Tunable < Puppet::Provider
     rescue 
       cmd('-x').split("\n").each do |line|
 	line_array = line.split(',', -1)
-	name, current, default = line_array[0..3]
+	name, current, default, reboot = line_array[0..4]
 	type = line_array[-2]
 	name.sub!(/%$/, '_p')
-	instances_hash[name.downcase] = TunableProperty.new(name, current, default, type)
+	instances_hash[name.downcase] = TunableProperty.new(name, current, default, reboot, type)
       end
       class_variable_set(:@@instances_hash, instances_hash)
     end
@@ -33,9 +37,11 @@ class Puppet::Provider::Tunable < Puppet::Provider
     filter = case type
       when "reboot" 
         cmd_flags = ['-r', '-y']
+        current = 'reboot'
         ['R', 'B']
       when "dynamic" 
         cmd_flags = ['-p']
+        current = 'current'
         ['D', 'M', 'I', 'C']
       else return []
     end
@@ -47,7 +53,7 @@ class Puppet::Provider::Tunable < Puppet::Provider
       # tunables in AIX are case sensitive.
       # We should use the original name stored in TunableProperty.@name
       property = instances_hash[attr.to_s]
-      if property.current != value and property.current != 'n/a' and \
+      if property.send(current) != value and property.current != 'n/a' and \
          filter.include? property.type then
 	attr_str = property.name
 	attr_str.sub!(/_p$/, '%')
@@ -83,6 +89,5 @@ class Puppet::Provider::Tunable < Puppet::Provider
       end
     end
   end
-
 
 end 

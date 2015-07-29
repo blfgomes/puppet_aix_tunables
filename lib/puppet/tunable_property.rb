@@ -1,10 +1,11 @@
 class TunableProperty
-  attr_accessor :name, :current, :default, :type
+  attr_accessor :name, :current, :default, :reboot, :type
 
-  def initialize(name, current, default, type)
+  def initialize(name, current, default, reboot, type)
     @name = name
     @current = current
     @default = default
+    @reboot = reboot
     @type = type
   end
 end
