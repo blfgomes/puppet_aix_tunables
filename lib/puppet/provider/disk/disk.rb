@@ -9,8 +9,8 @@ Puppet::Type.type(:disk).provide :disk do
   def self.create_attr_hash(attr_lines)
     attr_hash = {}
     attr_lines.each do |line|
-      line =~ /^(\w+)\s+(\w+)/
-      attr_hash[$1.to_sym] = $2 
+      attribute, value = line.split(',')
+      attr_hash[attribute.to_sym] = value
     end
     return attr_hash
   end
@@ -20,7 +20,7 @@ Puppet::Type.type(:disk).provide :disk do
       line.split(/\s+/)[0]
     end
     disks.collect do |disk|
-      attr_lines = lsattr('-El', disk).split("\n")
+      attr_lines = lsattr('-F', 'attribute,value', '-l', disk).split("\n")
       attr_hash = create_attr_hash(attr_lines)
       attr_hash[:name] = disk
       new(attr_hash)
