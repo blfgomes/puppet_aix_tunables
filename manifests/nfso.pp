@@ -1,17 +1,18 @@
-class aix_tunables::nfso($client_delegation         = undef,
-                         $nfs_max_read_size         = undef,
-                         $nfs_max_write_size        = undef,
-                         $nfs_rfc1323               = undef,
-                         $nfs_securenfs_authtimeout = undef,
-                         $nfs_server_base_priority  = undef,
-                         $nfs_server_clread         = undef,
-                         $nfs_use_reserved_ports    = undef,
-                         $nfs_v3_server_readdirplus = undef,
-                         $nfs_v4_fail_over_timeout  = undef,
-                         $portcheck                 = undef,
-                         $server_delegation         = undef,
-                         $utf8_validation           = undef,
-                         $enforce_default           = undef,) {
+# Class for nfso kernel tunable
+class aix_tunables::nfso( $client_delegation         = undef,
+                          $nfs_max_read_size         = undef,
+                          $nfs_max_write_size        = undef,
+                          $nfs_rfc1323               = undef,
+                          $nfs_securenfs_authtimeout = undef,
+                          $nfs_server_base_priority  = undef,
+                          $nfs_server_clread         = undef,
+                          $nfs_use_reserved_ports    = undef,
+                          $nfs_v3_server_readdirplus = undef,
+                          $nfs_v4_fail_over_timeout  = undef,
+                          $portcheck                 = undef,
+                          $server_delegation         = undef,
+                          $utf8_validation           = undef,
+                          $enforce_default           = undef,) {
 
 
   nfso {'nfso':

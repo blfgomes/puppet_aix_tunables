@@ -1,3 +1,4 @@
+# Class for ioo kernel tunable
 class aix_tunables::ioo($aio_maxreqs                    = undef,
                         $aio_maxservers                 = undef,
                         $aio_minservers                 = undef,

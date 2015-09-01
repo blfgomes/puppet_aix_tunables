@@ -1,3 +1,4 @@
+# Class for vmo kernel tunable
 class aix_tunables::vmo($ame_cpus_per_pool              = undef,
                         $ame_maxfree_mem                = undef,
                         $ame_min_ucpool_size            = undef,
