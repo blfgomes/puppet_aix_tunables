@@ -58,4 +58,7 @@ Puppet::Type.newtype(:sys0) do
   newproperty(:sed_config) do 
   end
 
+  newparam(:reboot_notify_cmd) do
+  end
+
 end

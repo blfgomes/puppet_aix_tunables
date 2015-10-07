@@ -1,4 +1,5 @@
 require 'puppet/tunable_property'
+require 'puppet/aix_notify'
 
 class Puppet::Provider::Tunable < Puppet::Provider
   confine :operatingsystem => :AIX
@@ -67,18 +68,34 @@ class Puppet::Provider::Tunable < Puppet::Provider
     end
   end
 
+  def flush_type(command)
+    output = cmd(command)
+    if output =~ /is not supported/ then
+      raise Puppet::ExecutionFailure, output
+    end
+  end
+
   def flush
-    [cmdline('reboot'), cmdline('dynamic')].each do |command|
-      begin
-	next if command.empty? 
-	output = cmd(command)
-	if output =~ /is not supported/ then
-	  raise Puppet::ExecutionFailure, output
-	end
-      rescue Puppet::ExecutionFailure => e
-	@property_hash = {}
-	raise Puppet::Error, "Error -> #{e.inspect}"
+    begin
+      # First changes that need a reboot to be effective
+      reboot_cmd = cmdline('reboot')
+      if !reboot_cmd.empty? then
+        flush_type reboot_cmd
+        reboot_notify_cmd = resource[:reboot_notify_cmd]
+        if (reboot_notify_cmd.to_s != '') then
+          # Notifies that a reboot is required
+          RebootNotify.exec(resource[:reboot_notify_cmd])
+        end
       end
+
+      # Now dynamic parameters
+      dynamic_cmd = cmdline('dynamic')
+      if !dynamic_cmd.empty? then
+        flush_type dynamic_cmd
+      end
+    rescue Puppet::ExecutionFailure => e
+      @property_hash = {}
+      raise Puppet::Error, "Error -> #{e.inspect}"
     end
   end
 

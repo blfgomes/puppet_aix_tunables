@@ -17,7 +17,9 @@ class aix_tunables::schedo( $affinity_lim                  = undef,
                             $vpm_throughput_core_threshold = undef,
                             $vpm_throughput_mode           = undef,
                             $vpm_xvcpus                    = undef,
-                            $enforce_default               = undef,){
+                            $enforce_default               = undef,
+                            $reboot_notify_cmd             = $aix_tunables::params::reboot_notify_cmd,
+) inherits aix_tunables::params {
 
   schedo {'schedo':
     affinity_lim                  => $affinity_lim,
@@ -39,6 +41,7 @@ class aix_tunables::schedo( $affinity_lim                  = undef,
     vpm_throughput_mode           => $vpm_throughput_mode,
     vpm_xvcpus                    => $vpm_xvcpus,
     enforce_default               => $enforce_default,
+    reboot_notify_cmd             => $reboot_notify_cmd,
   }
 
 }

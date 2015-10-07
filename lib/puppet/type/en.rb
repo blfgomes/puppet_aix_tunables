@@ -72,4 +72,7 @@ Puppet::Type.newtype(:en) do
     newvalues(:true, :false)
   end
 
+  newparam(:reboot_notify_cmd) do
+  end
+
 end

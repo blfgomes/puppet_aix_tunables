@@ -1,3 +1,4 @@
+require 'puppet/aix_notify'
 class Puppet::Provider::Device < Puppet::Provider
   confine :operatingsystem => :AIX
 
@@ -39,6 +40,10 @@ class Puppet::Provider::Device < Puppet::Provider
     begin
       if resource[:device_in_use] == :true
         chdev('-l', resource[:name], options, '-P')
+        reboot_notify_cmd = resource[:reboot_notify_cmd]
+        if (reboot_notify_cmd.to_s != '')
+	  RebootNotify.exec(resource[:reboot_notify_cmd]) 
+        end
       else
         chdev('-l', resource[:name], options)
       end

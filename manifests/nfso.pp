@@ -12,7 +12,9 @@ class aix_tunables::nfso( $client_delegation         = undef,
                           $portcheck                 = undef,
                           $server_delegation         = undef,
                           $utf8_validation           = undef,
-                          $enforce_default           = undef,) {
+                          $enforce_default           = undef,
+                          $reboot_notify_cmd         = $aix_tunables::params::reboot_notify_cmd,
+) inherits aix_tunables::params {
 
 
   nfso {'nfso':
@@ -30,6 +32,7 @@ class aix_tunables::nfso( $client_delegation         = undef,
     server_delegation         => $server_delegation,
     utf8_validation           => $utf8_validation,
     enforce_default           => $enforce_default,
+    reboot_notify_cmd         => $reboot_notify_cmd,
   }
 
 }

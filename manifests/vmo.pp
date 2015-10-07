@@ -35,8 +35,9 @@ class aix_tunables::vmo($ame_cpus_per_pool              = undef,
                         $vmm_default_pspa               = undef,
                         $vmm_klock_mode                 = undef,
                         $wlm_memlimit_nonpg             = undef,
-                        $enforce_default                = undef,) {
-
+                        $enforce_default                = undef,
+                        $reboot_notify_cmd              = $aix_tunables::params::reboot_notify_cmd,
+) inherits aix_tunables::params {
 
   vmo {'vmo':
     ame_cpus_per_pool              => $ame_cpus_per_pool,
@@ -76,6 +77,7 @@ class aix_tunables::vmo($ame_cpus_per_pool              = undef,
     vmm_klock_mode                 => $vmm_klock_mode,
     wlm_memlimit_nonpg             => $wlm_memlimit_nonpg,
     enforce_default                => $enforce_default,
+    reboot_notify_cmd              => $reboot_notify_cmd,
   }
 
 }

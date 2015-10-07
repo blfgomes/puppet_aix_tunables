@@ -142,7 +142,9 @@ class aix_tunables::no( $bsd_loglevel              = undef,
                         $site6_index               = undef,
                         $tcp_pmtu_discover         = undef,
                         $udp_pmtu_discover         = undef,
-                        $enforce_default           = undef,) {
+                        $enforce_default           = undef,
+                        $reboot_notify_cmd         = $aix_tunables::params::reboot_notify_cmd,
+) inherits aix_tunables::params {
 
 
 
@@ -291,6 +293,7 @@ class aix_tunables::no( $bsd_loglevel              = undef,
     tcp_pmtu_discover         => $tcp_pmtu_discover,
     udp_pmtu_discover         => $udp_pmtu_discover,
     enforce_default           => $enforce_default,
+    reboot_notify_cmd         => $reboot_notify_cmd,
   }
 
 }

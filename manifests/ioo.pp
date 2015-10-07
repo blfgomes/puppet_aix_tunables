@@ -26,7 +26,10 @@ class aix_tunables::ioo($aio_maxreqs                    = undef,
                         $posix_aio_maxservers           = undef,
                         $posix_aio_minservers           = undef,
                         $posix_aio_server_inactivity    = undef,
-                        $enforce_default                = undef,) {
+                        $enforce_default                = undef,
+                        $reboot_notify_cmd              = $aix_tunables::params::reboot_notify_cmd,
+) inherits aix_tunables::params {
+
 
 
   ioo {'ioo':
@@ -58,6 +61,7 @@ class aix_tunables::ioo($aio_maxreqs                    = undef,
     posix_aio_minservers           => $posix_aio_minservers,
     posix_aio_server_inactivity    => $posix_aio_server_inactivity,
     enforce_default                => $enforce_default,
+    reboot_notify_cmd              => $reboot_notify_cmd,
   }
 
 }

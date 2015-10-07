@@ -226,6 +226,9 @@ Puppet::Type.newtype(:vmo) do
     newvalues(:true, :false)
   end
 
+  newparam(:reboot_notify_cmd) do
+  end
+
   validate do
     if self[:enforce_default] == :true then
       self.class.properties.each do |property|
