@@ -83,7 +83,6 @@ Puppet::Type.newtype(:ioo) do
 
   newproperty(:j2_recoveryMode) do
     munge do |value|
-      puts value
       @resource.munge_default(name, value)
     end
   end
