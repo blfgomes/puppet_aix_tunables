@@ -1,6 +1,6 @@
 # Configure default settings for disks
 class aix_tunables::disks::default(
-      $configured_disks  = hiera('aix_tunables::disks::config::disk_resources'),
+      $configured_disks  = hiera('aix_tunables::disks::config::disk_resources', {}),
       $algorithm         = undef,
       $hcheck_cmd        = undef,
       $hcheck_mode       = undef,
