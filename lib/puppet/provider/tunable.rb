@@ -25,6 +25,10 @@ class Puppet::Provider::Tunable < Puppet::Provider
       cmd('-x').split("\n").each do |line|
 	line_array = line.split(',', -1)
 	name, current, default, reboot = line_array[0..4]
+        # Does not have a default, set it to current value
+        if default == '' then
+          default = current
+        end
 	type = line_array[-2]
 	name.sub!(/%$/, '_p')
 	instances_hash[name.downcase] = TunableProperty.new(name, current, default, reboot, type)
