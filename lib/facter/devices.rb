@@ -13,9 +13,20 @@ Facter.add('ens_array') do
   confine :kernel => 'AIX'
   setcode do
     begin
-      pvs = Facter::Core::Execution.exec('lsdev -Ct en').split("\n").collect { |line| line.split[0] }
+      ens = Facter::Core::Execution.exec('lsdev -Ct en').split("\n").collect { |line| line.split[0] }
     rescue
-      pvs = []
+      ens = []
+    end
+  end
+end
+
+Facter.add('ents_array') do
+  confine :kernel => 'AIX'
+  setcode do
+    begin
+      ents = Facter::Core::Execution.exec('lsdev -Ct IBM,l-lan').split("\n").collect { |line| line.split[0] }
+    rescue
+      ents = []
     end
   end
 end
