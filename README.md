@@ -62,7 +62,7 @@ class {'aix_tunables::nfso':
   enforce_default => true,
 }
 
-class {'aix_tunables::disks::default':
+class {'aix_tunables::disk::default':
   queue_depth  => 128,
   max_transfer => "0x100000",
 }
@@ -88,8 +88,8 @@ aix_tunables::no::enforce_default: true
 
 aix_tunables::nfso::enforce_default: true
 
-aix_tunables::disks::default::queue_depth: 128
-aix_tunables::disks::default::max_transfer: "0x100000"
+aix_tunables::disk::default::queue_depth: 128
+aix_tunables::disk::default::max_transfer: "0x100000"
 ```
 
 ## Reference
@@ -385,7 +385,7 @@ they do.
 |enforce\_default
 |reboot\_notify\_cmd
 
-#### aix\_tunables::disks::default
+#### aix\_tunables::disk::default
 | Parameters
 |------------
 |configured\_disks
@@ -398,9 +398,9 @@ they do.
 |reboot\_notify\_cmd
 
 Configures all disk devices not specified individually in 
-aix\_tunables::disks::config (see below) with the given values.
+aix\_tunables::disk::config (see below) with the given values.
 
-#### aix\_tunables::disks::config
+#### aix\_tunables::disk::config
 | Parameters
 |------------
 |disk\_resources
