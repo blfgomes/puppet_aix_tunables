@@ -29,7 +29,7 @@ class Puppet::Provider::Tunable < Puppet::Provider
         if default == '' then
           default = current
         end
-	type = line_array[-2]
+	type = line_array[7]
 	name.sub!(/%$/, '_p')
 	instances_hash[name.downcase] = TunableProperty.new(name, current, default, reboot, type)
       end
