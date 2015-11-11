@@ -58,7 +58,7 @@ class Puppet::Provider::Tunable < Puppet::Provider
       # tunables in AIX are case sensitive.
       # We should use the original name stored in TunableProperty.@name
       property = instances_hash[attr.to_s]
-      if property.send(current) != value and property.current != 'n/a' and \
+      if property.send(current) != value.to_s and property.current != 'n/a' and \
          filter.include? property.type then
 	attr_str = property.name
 	attr_str.sub!(/_p$/, '%')
