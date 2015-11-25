@@ -38,14 +38,23 @@ class Puppet::Provider::Device < Puppet::Provider
       options << ['-a', "#{attr}=#{value}"]
     end
     begin
-      if resource[:device_in_use] == :true
-        chdev('-l', resource[:name], options, '-P')
-        reboot_notify_cmd = resource[:reboot_notify_cmd]
-        if (reboot_notify_cmd.to_s != '')
-	  RebootNotify.exec(resource[:reboot_notify_cmd]) 
+      # Tries to make an online change
+      begin
+	chdev('-l', resource[:name], options)
+        debug("Online change successful")
+      rescue Puppet::ExecutionFailure => e
+        # Tries to change only the CuDev database (-P) if device_in_use parameter == :true
+        debug("Could not make an online change")
+        if resource[:device_in_use] == :true
+          debug("device_in_use == :true, trying to change the CuDev database only (-P)")
+	  chdev('-l', resource[:name], options, '-P')
+          debug("Offline change successful")
+	  reboot_notify_cmd = resource[:reboot_notify_cmd]
+	  if (reboot_notify_cmd.to_s != '')
+            debug("reboot_notify_cmd set, running command")
+	    RebootNotify.exec(resource[:reboot_notify_cmd]) 
+	  end
         end
-      else
-        chdev('-l', resource[:name], options)
       end
     rescue Puppet::ExecutionFailure => e
       @property_hash = {}
