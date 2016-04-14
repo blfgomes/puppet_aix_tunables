@@ -1,5 +1,13 @@
 # Configures individual en network parameters. They should preferably be specified
 # using hiera, but you can pass them as a hash of hashes otherwise.
+#
+# Example in hiera:
+#
+# aix_tunables::en::config::en_resources:
+#   en3:
+#     mtu: 1500
+# 
+
 
 class aix_tunables::en::config(
       $en_resources      = undef,
