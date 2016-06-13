@@ -1,0 +1,45 @@
+# Class for sys0 kernel tunable
+class aix_tunables::sys0( $autorestart       = undef,
+                          $chown_restrict    = undef,
+                          $cpuguard          = undef,
+                          $fullcore          = undef,
+                          $ghostdev          = undef,
+                          $iostat            = undef,
+                          $log_pg_dealloc    = undef,
+                          $max_logname       = undef,
+                          $maxbuf            = undef,
+                          $maxmbuf           = undef,
+                          $maxpout           = undef,
+                          $maxuproc          = undef,
+                          $minpout           = undef,
+                          $ncargs            = undef,
+                          $nfs4_acl_compat   = undef,
+                          $pre430core        = undef,
+                          $pre520tune        = undef,
+                          $sed_config        = undef,
+                          $reboot_notify_cmd = $aix_tunables::params::reboot_notify_cmd,
+) inherits aix_tunables::params {
+
+  sys0 {'sys0':
+    autorestart     => $autorestart,
+    chown_restrict  => $chown_restrict,
+    cpuguard        => $cpuguard,
+    fullcore        => $fullcore,
+    ghostdev        => $ghostdev,
+    iostat          => $iostat,
+    log_pg_dealloc  => $log_pg_dealloc,
+    max_logname     => $max_logname,
+    maxbuf          => $maxbuf,
+    maxmbuf         => $maxmbuf,
+    maxpout         => $maxpout,
+    maxuproc        => $maxuproc,
+    minpout         => $minpout,
+    ncargs          => $ncargs,
+    nfs4_acl_compat => $nfs4_acl_compat,
+    pre430core      => $pre430core,
+    pre520tune      => $pre520tune,
+    sed_config      => $sed_config,
+  }
+
+}
+
