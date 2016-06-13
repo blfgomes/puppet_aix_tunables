@@ -10,6 +10,9 @@ Puppet::Type.newtype(:sys0) do
   newproperty(:chown_restrict) do 
   end
 
+  newproperty(:clouddev) do 
+  end
+
   newproperty(:cpuguard) do 
   end
 
