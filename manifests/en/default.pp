@@ -23,11 +23,17 @@ class aix_tunables::en::default(
       $tcp_sendspace     = undef,
       $thread            = undef,
       $device_in_use     = undef,
+      $available_only    = true,
       $reboot_notify_cmd = $aix_tunables::params::reboot_notify_cmd,
 ) inherits aix_tunables::params {
 
-  $default_ens =
-    split(inline_template("<%= (ens_array - configured_ens.keys).join(',') %>"), ',')
+  if $available_only {
+    $default_ens =
+      split(inline_template("<%= (ens_array_available - configured_ens.keys).join(',') %>"), ',')
+  } else {
+    $default_ens =
+      split(inline_template("<%= (ens_array - configured_ens.keys).join(',') %>"), ',')
+  }
 
   en { $default_ens:
     alias4            => $alias4,

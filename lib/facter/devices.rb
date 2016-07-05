@@ -32,6 +32,17 @@ Facter.add('ens_array') do
   end
 end
 
+Facter.add('ens_array_available') do
+  confine :kernel => 'AIX'
+  setcode do
+    begin
+      ens = Facter::Core::Execution.exec('lsdev -Ct en -S a').split("\n").collect { |line| line.split[0] }
+    rescue
+      ens = []
+    end
+  end
+end
+
 Facter.add('ents_array') do
   confine :kernel => 'AIX'
   setcode do
