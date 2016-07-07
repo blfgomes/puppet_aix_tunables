@@ -26,6 +26,10 @@ class aix_tunables::en::default(
       $available_only    = true,
       $reboot_notify_cmd = $aix_tunables::params::reboot_notify_cmd,
 ) inherits aix_tunables::params {
+  require aix_tunables::p_ent::default
+  require aix_tunables::p_ent::config
+  require aix_tunables::ent::default
+  require aix_tunables::ent::config
 
   if $available_only {
     $default_ens =
