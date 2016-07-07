@@ -1,0 +1,57 @@
+# Configure default settings for physical ent devices
+class aix_tunables::p_ent::default(
+      $configured_p_ents = hiera('aix_tunables::p_ent::config::p_ent_resources', {}),
+      $xtraintr          = undef,
+      $alt_addr          = undef,
+      $chksum_offload    = undef,
+      $compat_mode       = undef,
+      $copy_bytes        = undef,
+      $delay_open        = undef,
+      $failback          = undef,
+      $failback_delay    = undef,
+      $failover          = undef,
+      $flow_ctrl         = undef,
+      $intr_rate         = undef,
+      $jumbo_frames      = undef,
+      $large_send        = undef,
+      $link_up_timer     = undef,
+      $media_speed       = undef,
+      $rx_hog            = undef,
+      $rxbuf_pool_sz     = undef,
+      $rxdesc_que_sz     = undef,
+      $slih_hog          = undef,
+      $tx_que_sz         = undef,
+      $txdesc_que_sz     = undef,
+      $use_alt_addr      = undef,
+      $reboot_notify_cmd = $aix_tunables::params::reboot_notify_cmd,
+) inherits aix_tunables::params {
+
+  $default_p_ents =
+    split(inline_template("<%= (p_ents_array - configured_p_ents.keys).join(',') %>"), ',')
+
+  p_ent { $default_p_ents:
+    xtraintr          => $xtraintr,
+    alt_addr          => $alt_addr,
+    chksum_offload    => $chksum_offload,
+    compat_mode       => $compat_mode,
+    copy_bytes        => $copy_bytes,
+    delay_open        => $delay_open,
+    failback          => $failback,
+    failback_delay    => $failback_delay,
+    failover          => $failover,
+    flow_ctrl         => $flow_ctrl,
+    intr_rate         => $intr_rate,
+    jumbo_frames      => $jumbo_frames,
+    large_send        => $large_send,
+    link_up_timer     => $link_up_timer,
+    media_speed       => $media_speed,
+    rx_hog            => $rx_hog,
+    rxbuf_pool_sz     => $rxbuf_pool_sz,
+    rxdesc_que_sz     => $rxdesc_que_sz,
+    slih_hog          => $slih_hog,
+    tx_que_sz         => $tx_que_sz,
+    txdesc_que_sz     => $txdesc_que_sz,
+    use_alt_addr      => $use_alt_addr,
+    reboot_notify_cmd => $reboot_notify_cmd,
+  }
+}
