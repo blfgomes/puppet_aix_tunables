@@ -4,9 +4,6 @@ Puppet::Type.newtype(:p_ent) do
     desc "Name of Physical Ethernet Adapter"
   end
 
-  newproperty(:XtraIntr) do
-  end
-
   newproperty(:alt_addr) do
   end
 
