@@ -1,7 +1,6 @@
 # Configure default settings for physical ent devices
 class aix_tunables::p_ent::default(
       $configured_p_ents = hiera('aix_tunables::p_ent::config::p_ent_resources', {}),
-      $xtraintr          = undef,
       $alt_addr          = undef,
       $chksum_offload    = undef,
       $compat_mode       = undef,
@@ -30,7 +29,6 @@ class aix_tunables::p_ent::default(
     split(inline_template("<%= (p_ents_array - configured_p_ents.keys).join(',') %>"), ',')
 
   p_ent { $default_p_ents:
-    xtraintr          => $xtraintr,
     alt_addr          => $alt_addr,
     chksum_offload    => $chksum_offload,
     compat_mode       => $compat_mode,
