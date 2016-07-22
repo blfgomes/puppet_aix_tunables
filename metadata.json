@@ -1,6 +1,6 @@
 {
   "name": "blfgomes-aix_tunables",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "author": "Bruno Gomes",
   "summary": "Kernel and Device parameters",
   "description": "Enforce Kernel and Device parameters in AIX",
