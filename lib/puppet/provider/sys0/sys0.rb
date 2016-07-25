@@ -11,7 +11,7 @@ Puppet::Type.type(:sys0).provide :sys0, :parent => Puppet::Provider::Device do
   def self.instances
     attr_lines = lsattr('-F', 'attribute,value', '-l', 'sys0').split("\n")
     attr_hash = create_attr_hash(attr_lines)
-    attr_hash[:name] = :sys0
+    attr_hash[:name] = 'sys0'
     [new(attr_hash)]
   end
 

@@ -45,7 +45,7 @@ class Puppet::Provider::Device < Puppet::Provider
       rescue Puppet::ExecutionFailure => e
         # Tries to change only the CuDev database (-P) if device_in_use parameter == :true
         debug("Could not make an online change")
-        if resource[:device_in_use] == :true
+        if resource.to_hash.has_key?(:device_in_use) && resource[:device_in_use] == :true
           debug("device_in_use == :true, trying to change the CuDev database only (-P)")
 	  chdev('-l', resource[:name], options, '-P')
           debug("Offline change successful")
@@ -54,6 +54,8 @@ class Puppet::Provider::Device < Puppet::Provider
             debug("reboot_notify_cmd set, running command")
 	    RebootNotify.exec(resource[:reboot_notify_cmd]) 
 	  end
+        else
+	  raise Puppet::Error, "chdev had an error -> #{e.inspect}"
         end
       end
     rescue Puppet::ExecutionFailure => e
