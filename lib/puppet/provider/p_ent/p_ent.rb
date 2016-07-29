@@ -1,4 +1,4 @@
-require 'puppet/provider/device'
+require_relative '../../provider/device'
 
 Puppet::Type.type(:p_ent).provide :p_ent, :parent => Puppet::Provider::Device do
   confine :operatingsystem => :AIX

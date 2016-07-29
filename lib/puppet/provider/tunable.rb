@@ -1,5 +1,5 @@
-require 'puppet/tunable_property'
-require 'puppet/aix_notify'
+require_relative '../tunable_property'
+require_relative '../aix_notify'
 
 class Puppet::Provider::Tunable < Puppet::Provider
   confine :operatingsystem => :AIX

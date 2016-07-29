@@ -1,4 +1,4 @@
-require 'puppet/provider/tunable'
+require_relative '../../provider/tunable'
 
 Puppet::Type.type(:asoo).provide :asoo, :parent => Puppet::Provider::Tunable do
   confine :operatingsystem => :AIX
